@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo h1 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn-login:active {
+            transform: translateY(0);
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            display: none;
+            background: #ffebee;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #388e3c;
+            font-weight: 600;
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+        
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>🔐 WiFi</h1>
+            <p>Silakan Login untuk Lanjut</p>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Username" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Password" required>
+            </div>
+            
+            <button type="submit" class="btn-login">LOGIN</button>
+            
+            <div id="errorMessage" class="error-message">
+                ❌ Username atau Password salah!
+            </div>
+            
+            <div id="successMessage" class="success-message">
+                ✅ Login Berhasil! Redirecting...
+            </div>
+        </form>
+        
+        <div class="message">
+            <p>© 2026 WiFi Network</p>
+        </div>
+    </div>
+    
+    <script>
+        // DATA USER - JANGAN DIUBAH KECUALI TAMBAH USER BARU
+        const users = [
+            { username: "mada19", password: "madanura" },
+            { username: "user02", password: "nvm67" },
+            { username: "tamu", password: "tamumada" }
+        ];
+        
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Cek apakah username dan password cocok
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // Login BERHASIL
+                document.getElementById('errorMessage').classList.add('hidden');
+                document.getElementById('successMessage').classList.remove('hidden');
+                document.getElementById('loginForm').classList.add('hidden');
+                
+                // Simpan log login (optional)
+                localStorage.setItem('login_' + new Date().getTime(), JSON.stringify({
+                    username: username,
+                    timestamp: new Date().toISOString()
+                }));
+                
+                // Redirect setelah 2 detik
+                setTimeout(function() {
+                    window.location.href = 'https://www.google.com';
+                }, 2000);
+            } else {
+                // Login GAGAL
+                document.getElementById('errorMessage').classList.remove('hidden');
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+                document.getElementById('username').focus();
+            }
+        });
+    </script>
+</body>
+  </html>
